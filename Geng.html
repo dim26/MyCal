@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geng</title>
+    <style>
+        div {
+            font-size: 20px;
+            font-family: 'Segoe UI';
+            margin-right: 10px;
+        }
+        #date{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div id="year"></div>
+    <div id="date">
+        <div id='day'> </div>
+        <div id='fort'></div>
+    </div>
+    <div id='month'></div>
+
+    <script type="text/javascript">
+        function monName(num) {
+            const monNameList = {
+                1: "Ceveka Weneruņiri",
+                2: "Ceveka Nirojygom",
+                3: "Ceveka Ťerojimegon",
+                4: "Ceveka Newānīśori",
+                5: "Ceveka Niťerojimegon",
+                6: "Ceveka Ojygom",
+                7: "Ceveka Idibilāsa",
+                8: "Ceveka Jākuro",
+                9: "Ceveka Dijevāteri",
+                10: "Ceveka Lexoremiri",
+                11: "Ceveka Šogaluri",
+                12: "Ceveka Edamātiri",
+                13: "Ceveka Mīsa Hātonu"
+            };
+
+            const monName = monNameList[num];
+            return monName;
+        }
+
+        function yearLen(yrInGreg) {
+            let yrLen = 0;
+            const result = [];
+            const age = yrInGreg - 1923;
+
+            for (let i = 1; i <= age; i++) {
+                const modYr = i % 76;
+
+                if ([3, 6, 11, 14, 17, 22, 25, 27, 30, 33, 41, 46, 49, 55, 63, 65, 71, 74].includes(modYr)) {
+                    yrLen = 384;
+                } else if ([8, 36, 44, 52, 60, 68].includes(modYr)) {
+                    yrLen = 385;
+                } else if ([0, 19, 38, 57].includes(modYr)) {
+                    yrLen = 383;
+                } else if ([4, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 72].includes(modYr)) {
+                    yrLen = 355;
+                } else {
+                    yrLen = 354;
+                }
+
+                result.push(yrLen);
+            }
+
+            return result;
+        }
+
+        function monList(yearLen) {
+            let monthList = [];
+
+            if (yearLen == 354) monthList = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
+            else if (yearLen == 355) monthList = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 30];
+            else if (yearLen == 383) monthList = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 29];
+            else if (yearLen == 384) monthList = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30];
+            else if (yearLen == 385) monthList = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 30, 30];
+            else console.log("ERROR");
+
+            return monthList;
+        }
+
+        function gregToGeng(d, m, y) {
+            const inputDate = new Date(y, m - 1, d);
+            const epochalDate = new Date(1924, 2, 20);
+            
+            let daysElapsed = Math.abs((inputDate - epochalDate)/(1000 * 60 * 60 * 24));
+            let gengYr = 1;
+            let gengMonth = 1;
+            let gengDay = 1;
+
+            const yrBasket = yearLen(y);
+            const monBasket = monList(yrBasket.slice(-1));
+
+            while (daysElapsed >= yrBasket.reduce((a, b) => a + b, 0) || daysElapsed >= monBasket.reduce((a, b) => a + b, 0)) {
+                for (let i = 0; i < yrBasket.length; i++) {
+                    if (daysElapsed >= yrBasket[i]) {
+                        daysElapsed -= yrBasket[i];
+                        gengYr++;
+                    } else {
+                        break;
+                    }
+                }
+
+                for (let i = 0; i < monBasket.length; i++) {
+                    if (daysElapsed >= monBasket[i]) {
+                        daysElapsed -= monBasket[i];
+                        gengMonth++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            gengDay += daysElapsed;
+
+            let gengFort = "Xeder";
+            if (gengDay > 15) {
+                gengFort = "Wexeder";
+                gengDay -= 15;
+            }
+
+            if (gengMonth > 13){
+                gengYr ++;
+                gengMonth += 1;
+            }
+
+            document.getElementById('fort').innerHTML = (gengFort);
+            document.getElementById('day').innerHTML = (gengDay);
+            document.getElementById('month').innerHTML = (gengMonth);
+            document.getElementById('year').innerHTML = (gengYr);
+        }
+
+
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).toLocaleDateString();
+
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+
+        gregToGeng(d, m, y);
+    </script>
+</body>
+</html>
