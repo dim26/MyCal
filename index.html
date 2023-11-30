@@ -13,15 +13,24 @@
         #date{
             display: flex;
         }
+        #mnth{
+            display: flex;
+        }
+        #monthName{
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div id="year"></div>
     <div id="date">
-        <div id='day'> </div>
+        <div id='day'></div>
         <div id='fort'></div>
     </div>
-    <div id='month'></div>
+    <div id="mnth">
+        <div id='month'> </div>
+        <div id='monthName'></div>
+    </div>
 
     <script type="text/javascript">
         function monName(num) {
@@ -129,10 +138,13 @@
                 gengMonth += 1;
             }
 
+            let gengMonName = monName(gengMonth - 1);
+
             document.getElementById('fort').innerHTML = (gengFort);
             document.getElementById('day').innerHTML = (gengDay);
             document.getElementById('month').innerHTML = (gengMonth);
-            document.getElementById('year').innerHTML = (gengYr);
+            document.getElementById('monthName').innerHTML = ("(" + gengMonName + ")");
+            document.getElementById('year').innerHTML = (gengYr + " Anno Unioni Regnorum");
         }
 
 
