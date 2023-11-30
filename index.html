@@ -8,7 +8,6 @@
         div {
             font-size: 20px;
             font-family: 'Segoe UI';
-            margin-right: 10px;
         }
         #date{
             display: flex;
@@ -141,7 +140,7 @@
             let gengMonName = monName(gengMonth - 1);
 
             document.getElementById('fort').innerHTML = (gengFort);
-            document.getElementById('day').innerHTML = (gengDay);
+            document.getElementById('day').innerHTML = (gengDay + " ");
             document.getElementById('month').innerHTML = (gengMonth);
             document.getElementById('monthName').innerHTML = ("(" + gengMonName + ")");
             document.getElementById('year').innerHTML = (gengYr + " Anno Unioni Regnorum");
